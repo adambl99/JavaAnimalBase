@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class AnimalBase {
 
@@ -13,9 +14,9 @@ public class AnimalBase {
         UserInterface ui = new UserInterface(this);
 
         // TEST - REMOVE LATER!
-        createNewAnimal("Bertil", "sleepy", "bull", 7);
-        createNewAnimal("Abelone", "large", "elephant", 7);
-        createNewAnimal("Crystal", "shiny", "turtle", 7);
+        createNewAnimal("Bertil", "cute", "cat", 10);
+        createNewAnimal("Abelone", "large", "elephant", 15);
+        createNewAnimal("Crystal", "alternate", "alligator", 7);
 
         ui.start();
     }
@@ -30,21 +31,24 @@ public class AnimalBase {
     }
 
     public void sortBy(String sort) {
-        Collections.sort(animals);
-        for (Animal animal : animals) {
-            System.out.println("TODO: Sort the list of animals by: " + sort);
+        if (Objects.equals(sort, "name")) {
+            Collections.sort(animals, new SortByName());
+        } else if (Objects.equals(sort, "type")) {
+            Collections.sort(animals, new SortByType());
+        } else if (Objects.equals(sort, "age")) {
+            Collections.sort(animals, new SortByAge());
         }
     }
 
     public void createNewAnimal(String name, String description, String type, int age) {
-        Animal animal = new Animal(name,description,type,age);
+        Animal animal = new Animal(name, description, type, age);
         animals.add(animal);
     }
 
     public void deleteAnimal(String name) throws NonExistingAnimalException {
         // find animal with this name
         Animal animal = findAnimalByName(name);
-        if(animal == null) {
+        if (animal == null) {
             throw new NonExistingAnimalException();
         } else {
             animals.remove(animal);
@@ -52,8 +56,8 @@ public class AnimalBase {
     }
 
     private Animal findAnimalByName(String name) {
-        for(Animal animal : animals) {
-            if(animal.getName().equalsIgnoreCase(name)) {
+        for (Animal animal : animals) {
+            if (animal.getName().equalsIgnoreCase(name)) {
                 return animal;
             }
         }
